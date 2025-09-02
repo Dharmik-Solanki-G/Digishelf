@@ -75,7 +75,12 @@ function getAllBooks($pdo) {
                 b.*,
                 c.name as category_name,
                 COALESCE(AVG(r.rating), 0) as avg_rating,
-                COUNT(r.id) as review_count
+                COUNT(r.id) as review_count,
+                CASE 
+                    WHEN b.cover_image IS NOT NULL AND b.cover_image != '' 
+                    THEN CONCAT('/digishelf/backend/uploads/', b.cover_image)
+                    ELSE NULL
+                END as image_path
             FROM books b
             LEFT JOIN categories c ON b.category_id = c.id
             LEFT JOIN reviews r ON b.id = r.book_id
@@ -129,7 +134,12 @@ function searchBooks($pdo) {
                 b.*,
                 c.name as category_name,
                 COALESCE(AVG(r.rating), 0) as avg_rating,
-                COUNT(r.id) as review_count
+                COUNT(r.id) as review_count,
+                CASE 
+                    WHEN b.cover_image IS NOT NULL AND b.cover_image != '' 
+                    THEN CONCAT('/digishelf/backend/uploads/', b.cover_image)
+                    ELSE NULL
+                END as image_path
             FROM books b
             LEFT JOIN categories c ON b.category_id = c.id
             LEFT JOIN reviews r ON b.id = r.book_id
@@ -184,7 +194,12 @@ function getBookById($pdo, $id) {
                 b.*,
                 c.name as category_name,
                 COALESCE(AVG(r.rating), 0) as avg_rating,
-                COUNT(r.id) as review_count
+                COUNT(r.id) as review_count,
+                CASE 
+                    WHEN b.cover_image IS NOT NULL AND b.cover_image != '' 
+                    THEN CONCAT('/digishelf/backend/uploads/', b.cover_image)
+                    ELSE NULL
+                END as image_path
             FROM books b
             LEFT JOIN categories c ON b.category_id = c.id
             LEFT JOIN reviews r ON b.id = r.book_id

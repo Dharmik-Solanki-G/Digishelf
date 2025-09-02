@@ -1,4 +1,4 @@
-// src/pages/BooksPage.js - UPDATED VERSION with Different Book Cover Classes
+// src/pages/BooksPage.js - UPDATED VERSION with Individual Book Images
 import React, { useState, useEffect } from 'react';
 import { booksAPI, userAPI, handleApiError } from '../services/api';
 
@@ -11,7 +11,7 @@ const BooksPage = ({ user }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({});
 
-  // Array of different book cover classes for variety
+  // Array of different book cover classes for variety (fallback when no image)
   const bookCoverClasses = [
     'cover-crimson-flame',
     'cover-ocean-depths',
@@ -27,7 +27,7 @@ const BooksPage = ({ user }) => {
     'cover-forest-sage'
   ];
 
-  // Function to get book cover class based on book ID or category
+  // Function to get book cover class based on book ID or category (fallback)
   const getBookCoverClass = (book, index) => {
     // You can customize this logic based on:
     // 1. Book category
@@ -61,6 +61,35 @@ const BooksPage = ({ user }) => {
     // return bookCoverClasses[(book.id - 1) % bookCoverClasses.length];
   };
 
+  // Function to render book cover (image or CSS class)
+  const renderBookCover = (book, index) => {
+    // Check if book has an image
+    if (book.image_path && book.image_path.trim() !== '') {
+      return (
+        <div className="book-cover book-cover-image">
+          <img 
+            src={book.image_path} 
+            alt={`Cover of ${book.title}`}
+            onError={(e) => {
+              // If image fails to load, fallback to CSS class
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+          {/* Fallback icon if image fails to load */}
+          <i className="fas fa-book" style={{ display: 'none' }}></i>
+        </div>
+      );
+    } else {
+      // Use CSS class as fallback
+      return (
+        <div className={`book-cover ${getBookCoverClass(book, index)}`}>
+          <i className="fas fa-book"></i>
+        </div>
+      );
+    }
+  };
+
   useEffect(() => {
     loadBooks();
     loadCategories();
@@ -84,16 +113,72 @@ const BooksPage = ({ user }) => {
       setPagination(response.data.pagination);
     } catch (error) {
       console.error('Failed to load books:', error);
-      // Fallback data
+      // Fallback data with image paths (using only available images)
       setBooks([
-        { id: 1, title: "The Great Gatsby", author: "F. Scott Fitzgerald", category_name: "Fiction", available_quantity: 3 },
-        { id: 2, title: "1984", author: "George Orwell", category_name: "Dystopian", available_quantity: 4 },
-        { id: 3, title: "To Kill a Mockingbird", author: "Harper Lee", category_name: "Fiction", available_quantity: 2 },
-        { id: 4, title: "A Brief History of Time", author: "Stephen Hawking", category_name: "Science", available_quantity: 2 },
-        { id: 5, title: "The Da Vinci Code", author: "Dan Brown", category_name: "Mystery", available_quantity: 1 },
-        { id: 6, title: "Harry Potter", author: "J.K. Rowling", category_name: "Fantasy", available_quantity: 5 },
-        { id: 7, title: "Steve Jobs", author: "Walter Isaacson", category_name: "Biography", available_quantity: 2 },
-        { id: 8, title: "Pride and Prejudice", author: "Jane Austen", category_name: "Classic", available_quantity: 3 }
+        { 
+          id: 1, 
+          title: "Clean Code", 
+          author: "Robert C. Martin", 
+          category_name: "Programming", 
+          available_quantity: 5,
+          image_path: "/src/images/Clean Code.jpg"
+        },
+        { 
+          id: 2, 
+          title: "The Pragmatic Programmer", 
+          author: "Andrew Hunt & David Thomas", 
+          category_name: "Programming", 
+          available_quantity: 2,
+          image_path: "/src/images/The Pragmatic Programmer.jpg"
+        },
+        { 
+          id: 3, 
+          title: "To Kill a Mockingbird", 
+          author: "Harper Lee", 
+          category_name: "Fiction", 
+          available_quantity: 2,
+          image_path: "/src/images/To Kill a Mockingbird.jpg"
+        },
+        { 
+          id: 4, 
+          title: "Introduction to Algorithms", 
+          author: "Thomas H. Cormen", 
+          category_name: "Computer Science", 
+          available_quantity: 3,
+          image_path: "/src/images/Introduction to Algorithms.webp"
+        },
+        { 
+          id: 5, 
+          title: "Hands-On Machine Learning", 
+          author: "Aurélien Géron", 
+          category_name: "Machine Learning", 
+          available_quantity: 1,
+          image_path: "/src/images/Hands-On Machine Learning.jpg"
+        },
+        { 
+          id: 6, 
+          title: "The Intelligent Investor", 
+          author: "Benjamin Graham", 
+          category_name: "Finance", 
+          available_quantity: 4,
+          image_path: "/src/images/The Intelligent Investor.jpg"
+        },
+        { 
+          id: 7, 
+          title: "The McKinsey Way", 
+          author: "Ethan M. Rasiel", 
+          category_name: "Business", 
+          available_quantity: 2,
+          image_path: "/src/images/The McKinsey Way.jpg"
+        },
+        { 
+          id: 8, 
+          title: "First Aid for the USMLE Step 1", 
+          author: "Tao Le", 
+          category_name: "Medical", 
+          available_quantity: 3,
+          image_path: "/src/images/First Aid for the USMLE Step 1.jpg"
+        }
       ]);
       setPagination({ current_page: 1, total_pages: 1, total_books: 8 });
     } finally {
@@ -128,10 +213,38 @@ const BooksPage = ({ user }) => {
       console.error('Search failed:', error);
       // Show filtered fallback data based on search
       const fallbackBooks = [
-        { id: 1, title: "The Great Gatsby", author: "F. Scott Fitzgerald", category_name: "Fiction", available_quantity: 3 },
-        { id: 2, title: "1984", author: "George Orwell", category_name: "Dystopian", available_quantity: 4 },
-        { id: 3, title: "To Kill a Mockingbird", author: "Harper Lee", category_name: "Fiction", available_quantity: 2 },
-        { id: 4, title: "A Brief History of Time", author: "Stephen Hawking", category_name: "Science", available_quantity: 2 }
+        { 
+          id: 1, 
+          title: "Clean Code", 
+          author: "Robert C. Martin", 
+          category_name: "Programming", 
+          available_quantity: 5,
+          image_path: "/src/images/Clean Code.jpg"
+        },
+        { 
+          id: 2, 
+          title: "The Pragmatic Programmer", 
+          author: "Andrew Hunt & David Thomas", 
+          category_name: "Programming", 
+          available_quantity: 2,
+          image_path: "/src/images/The Pragmatic Programmer.jpg"
+        },
+        { 
+          id: 3, 
+          title: "To Kill a Mockingbird", 
+          author: "Harper Lee", 
+          category_name: "Fiction", 
+          available_quantity: 2,
+          image_path: "/src/images/To Kill a Mockingbird.jpg"
+        },
+        { 
+          id: 4, 
+          title: "Introduction to Algorithms", 
+          author: "Thomas H. Cormen", 
+          category_name: "Computer Science", 
+          available_quantity: 3,
+          image_path: "/src/images/Introduction to Algorithms.webp"
+        }
       ];
       setBooks(fallbackBooks.filter(book => 
         book.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -222,9 +335,7 @@ const BooksPage = ({ user }) => {
             <div className="grid grid-4">
               {books.map((book, index) => (
                 <div key={book.id} className="book-card fade-in">
-                  <div className={`book-cover ${getBookCoverClass(book, index)}`}>
-                    <i className="fas fa-book"></i>
-                  </div>
+                  {renderBookCover(book, index)}
                   <div className="book-info">
                     <div className="book-title">{book.title}</div>
                     <div className="book-author">by {book.author}</div>
