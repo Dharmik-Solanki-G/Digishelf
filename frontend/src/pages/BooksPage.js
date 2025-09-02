@@ -2,6 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { booksAPI, userAPI, handleApiError } from '../services/api';
 
+// ADD THESE IMAGE IMPORTS:
+import cleanCodeCover from '../images/Clean Code.jpg';
+import pragmaticProgrammerCover from '../images/The Pragmatic Programmer.jpg';
+import toKillAMockingbirdCover from '../images/To Kill a Mockingbird.jpg';
+import algorithmsCover from '../images/Introduction to Algorithms.webp';
+import machineLearningCover from '../images/Hands-On Machine Learning.jpg';
+import intelligentInvestorCover from '../images/The Intelligent Investor.jpg';
+import mckinseyCover from '../images/The McKinsey Way.jpg';
+import firstAidCover from '../images/First Aid for the USMLE Step 1.jpg';
+
 const BooksPage = ({ user }) => {
   const [books, setBooks] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -121,7 +131,7 @@ const BooksPage = ({ user }) => {
           author: "Robert C. Martin", 
           category_name: "Programming", 
           available_quantity: 5,
-          image_path: "/src/images/Clean Code.jpg"
+          image_path: cleanCodeCover  // Use imported image, not string
         },
         { 
           id: 2, 
@@ -129,7 +139,7 @@ const BooksPage = ({ user }) => {
           author: "Andrew Hunt & David Thomas", 
           category_name: "Programming", 
           available_quantity: 2,
-          image_path: "/src/images/The Pragmatic Programmer.jpg"
+          image_path: pragmaticProgrammerCover  // Use imported image
         },
         { 
           id: 3, 
@@ -137,7 +147,7 @@ const BooksPage = ({ user }) => {
           author: "Harper Lee", 
           category_name: "Fiction", 
           available_quantity: 2,
-          image_path: "/src/images/To Kill a Mockingbird.jpg"
+          image_path: toKillAMockingbirdCover  // Use imported image
         },
         { 
           id: 4, 
@@ -145,7 +155,7 @@ const BooksPage = ({ user }) => {
           author: "Thomas H. Cormen", 
           category_name: "Computer Science", 
           available_quantity: 3,
-          image_path: "/src/images/Introduction to Algorithms.webp"
+          image_path: algorithmsCover  // Use imported image
         },
         { 
           id: 5, 
@@ -153,7 +163,7 @@ const BooksPage = ({ user }) => {
           author: "Aurélien Géron", 
           category_name: "Machine Learning", 
           available_quantity: 1,
-          image_path: "/src/images/Hands-On Machine Learning.jpg"
+          image_path: machineLearningCover  // Use imported image
         },
         { 
           id: 6, 
@@ -161,7 +171,7 @@ const BooksPage = ({ user }) => {
           author: "Benjamin Graham", 
           category_name: "Finance", 
           available_quantity: 4,
-          image_path: "/src/images/The Intelligent Investor.jpg"
+          image_path: intelligentInvestorCover  // Use imported image
         },
         { 
           id: 7, 
@@ -169,7 +179,7 @@ const BooksPage = ({ user }) => {
           author: "Ethan M. Rasiel", 
           category_name: "Business", 
           available_quantity: 2,
-          image_path: "/src/images/The McKinsey Way.jpg"
+          image_path: mckinseyCover  // Use imported image
         },
         { 
           id: 8, 
@@ -177,7 +187,7 @@ const BooksPage = ({ user }) => {
           author: "Tao Le", 
           category_name: "Medical", 
           available_quantity: 3,
-          image_path: "/src/images/First Aid for the USMLE Step 1.jpg"
+          image_path: firstAidCover  // Use imported image
         }
       ]);
       setPagination({ current_page: 1, total_pages: 1, total_books: 8 });
@@ -219,7 +229,7 @@ const BooksPage = ({ user }) => {
           author: "Robert C. Martin", 
           category_name: "Programming", 
           available_quantity: 5,
-          image_path: "/src/images/Clean Code.jpg"
+          image_path: cleanCodeCover  // Use imported image
         },
         { 
           id: 2, 
@@ -227,7 +237,7 @@ const BooksPage = ({ user }) => {
           author: "Andrew Hunt & David Thomas", 
           category_name: "Programming", 
           available_quantity: 2,
-          image_path: "/src/images/The Pragmatic Programmer.jpg"
+          image_path: pragmaticProgrammerCover  // Use imported image
         },
         { 
           id: 3, 
@@ -235,7 +245,7 @@ const BooksPage = ({ user }) => {
           author: "Harper Lee", 
           category_name: "Fiction", 
           available_quantity: 2,
-          image_path: "/src/images/To Kill a Mockingbird.jpg"
+          image_path: toKillAMockingbirdCover  // Use imported image
         },
         { 
           id: 4, 
@@ -243,7 +253,7 @@ const BooksPage = ({ user }) => {
           author: "Thomas H. Cormen", 
           category_name: "Computer Science", 
           available_quantity: 3,
-          image_path: "/src/images/Introduction to Algorithms.webp"
+          image_path: algorithmsCover  // Use imported image
         }
       ];
       setBooks(fallbackBooks.filter(book => 
